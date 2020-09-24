@@ -1,28 +1,71 @@
 <template>
 	<view class="container">
-		<view class="intro">本项目已包含uni ui组件，无需import和注册，可直接使用。在代码区键入字母u，即可通过代码助手列出所有可用组件。光标置于组件名称处按F1，即可查看组件文档。</view>
-		<text class="intro">详见：</text>
-		<uni-link :href="href" :text="href"></uni-link>
+		<view class="top">
+			<view class="logo">
+				<image src="../../static/images/logo.png"></image>
+			</view>
+			<view class="inp">
+				<input type="text" value="" />
+			</view>
+		</view>
+		<view class="topmenu">
+			<view>
+				<text v-for="item in topdata" >
+					{{item.name}}
+				</text>
+			</view>
+			<view class="">
+				1
+			</view>
+		</view>
 	</view>
 </template>
-
 <script>
+	import {getTopMenuData} from "../../api/indexapi.js"
 	export default {
 		data() {
 			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'  
+				topdata:'',
 			}
 		},
 		methods: {
-
+			async getTopMenu(){
+				var {data} = await getTopMenuData();
+				console.log(data.tabs);
+				this.topdata = data.tabs;
+			}
+		},
+		created(){
+			this.getTopMenu()
 		}
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.container {
-		padding: 20px;
-		font-size: 14px;
-		line-height: 24px;
+		.top{
+			position: sticky;
+			top: 0px;
+			display: flex;
+			background-color: #ccc;
+			height: 80rpx;
+			.logo{
+				width: 60rpx;
+				height: 60rpx;
+				padding: 10rpx;
+				image{
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.inp{
+				margin: 10rpx;
+				background-color: #fff;
+				flex: 1;
+				input{
+					width: 100%;					
+				}
+			}
+		}
 	}
 </style>
