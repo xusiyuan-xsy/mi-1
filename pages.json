@@ -2,13 +2,69 @@
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "uni-ui基础项目"
+			"navigationBarBackgroundColor": "#fff",
+			"navigationBarTitleText":"mi"
 		}
-	}],
+	},
+	{
+		"path": "pages/classify/classify",
+		"style": {
+			"navigationBarBackgroundColor": "#fff",
+			"navigationBarTitleText": ""
+		}
+	},
+	{
+		"path": "pages/car/car",
+		"style": {
+			"navigationBarBackgroundColor": "#fff",
+			"navigationBarTitleText": ""
+		}
+	},
+	{
+		"path": "pages/user/user",
+		"style": {
+			"navigationBarBackgroundColor": "#F37D0F",
+			"navigationBarTitleText": ""
+		}
+	}
+	
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#007AFF",
 		"backgroundColor": "#FFFFFF"
+		
+	},
+	"tabBar": {
+		"color": "#333",
+		"selectedColor": "#FF6600",
+		"backgroundColor": "#eee",
+		"borderStyle": "black",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "./static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/homeselect.png"
+			},
+			{
+				"pagePath": "pages/classify/classify",
+				"text": "分类",
+				"iconPath": "static/tabbar/classification.png",
+				"selectedIconPath": "static/tabbar/classifcationselect.png"
+			},
+			{
+				"pagePath": "pages/car/car",
+				"text": "购物车",
+				"iconPath": "static/tabbar/car.png",
+				"selectedIconPath": "static/tabbar/carselect.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "我的",
+				"iconPath": "static/tabbar/user.png",
+				"selectedIconPath": "static/tabbar/userselect.png"
+			}
+		]
 	}
 }
