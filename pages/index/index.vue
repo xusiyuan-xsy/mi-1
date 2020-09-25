@@ -103,7 +103,7 @@
 	export default {
 		data() {
 			return {
-				topdata: 'syml12',
+				topdata: 'syml124',
 				topmenuselect: 0,
 				lbtdata: [],
 				gogei: [],
