@@ -12,8 +12,8 @@
 		
 		<!-- 头部菜单 -->
 		<view class="topmenu">
-			<scroll-view class="wz" scroll-x="true">
-				<text v-for="(item,index) in topdata" :key="index" :class="index == topmenuselect?'select wzbox':'<wzbox></wzbox>'">
+			<scroll-view class="wz" scroll-x="true" style="padding-right: 50rpx;">
+				<text v-for="(item,index) in topdata" :key="index" :class="index == topmenuselect?'select wzbox':'<wzbox></wzbox>'" >
 					{{item.name}}
 				</text>
 			</scroll-view>
@@ -59,35 +59,38 @@
 		<view class="xiaomi10">
 			<image :src="xiaomi.img_url" :style="{width: '100%',height: xiaomi.h+'rpx'}"></image>
 		</view>
-	
-		<view class="moban">
+		
+		<!-- 小米手机和小米电视 -->
+		<view class="moban" v-for="(items,index1) in moban" :key="index1">
 			<view class="mobantu">
-				<image :src="moban[0].body.items[0].img_url" :style="{width: '100%', height: moban[0].body.items[0].h +'rpx'}" ></image>
+				<image :src="items[0].body.items[0].img_url" :style="{width: '100%', height: items[0].body.items[0].h +'rpx'}" ></image>
 			</view>
 			
-			<uni-grid :column="2" :showBorder="false">
-				<uni-grid-item v-for="(item,index) in moban[1].body.items" :key="index"  style="margin:10rpx 0;">
+			<uni-grid :column="2" :showBorder='false'>
+				<uni-grid-item v-for="(item,index) in items[1].body.items" :key="index" style="height: 500rpx;margin-top:4rpx ;">
 					<view class="mobanbox">
 						<view class="mobanimg">
 							<image :src="item.img_url" style="width: 100%;height:100%"></image>
 						</view>
 						<view class="msbox">
-							<view class="">
+							<view class="jj">
 								{{item.product_name}}
 							</view>
-							<view class="">
+							<view class="xx">
 								{{item.product_brief}}
 							</view>
-							<view class="">
-								{{item.product_price}}
+							<view class="jg">
+								<text class="xj">￥{{item.product_price}}起  </text>
+								<text class="ls" v-if="!(item.product_price == item.product_org_price)">￥{{item.product_org_price}}</text>
 							</view>
-							<view class="">
-								{{item.product_org_price}}
-							</view>
+							<button size="mini" type="warn">立即购买</button>
 						</view>
 					</view>
 				</uni-grid-item>
 			</uni-grid>
+			<view class="gengduo">
+				{{items[2].body.items[0].action_title}}
+			</view>
 		</view>
 	
 	</view>
@@ -96,10 +99,11 @@
 	import {
 		getTopMenuData
 	} from "../../api/indexapi.js"
+	
 	export default {
 		data() {
 			return {
-				topdata: '',
+				topdata: 'syml',
 				topmenuselect: 0,
 				lbtdata: [],
 				gogei: [],
@@ -127,7 +131,6 @@
 				this.xiaomi = data.sections[6].body.items[0]
 				this.moban = data.moban;
 				
-				console.log(this.moban)
 			}
 		},
 		created() {
@@ -234,19 +237,53 @@
 		}
 		
 		.moban{
-			background-color: red;
+			background-color: #fff;
 			.mobantu{
-				margin: 10rpx 0;
+				margin-top: 10rpx;
 			}
 			.mobanbox{
-				background-color: #ccc;
-				margin: 10rpx;
+				background-color: #FFF;
+				margin: 0 4rpx;
 				.mobanimg {
 					height: 270rpx;
 				}
 				.msbox{
 					display: flex;
+					flex-direction:column;
+					align-items: center;
+					padding: 20rpx;
+					.jj{
+						font-size: 28rpx;
+					}
+					.xx{
+						margin-top:4rpx ;
+						font-size: 22rpx;
+						color: rgba(0,0,0,.54);
+					}
+					.jg{
+						margin-bottom:20rpx ;
+						.xj{
+							font-size: 28rpx;
+							color: #EA625B;
+							margin-right: 10rpx;
+						}
+						.ls{
+							font-size: 22rpx;
+							color: #757575;
+							text-decoration:line-through;
+						}
+					}
 				}
+				
+				
+			}
+			
+			.gengduo{
+				border-top: 1px solid #ccc;
+				display: flex;
+				justify-content: center;
+				color: #ccc;
+				padding: 36rpx;
 			}
 		}
 		
