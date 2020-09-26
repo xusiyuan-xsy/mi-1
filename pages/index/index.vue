@@ -17,9 +17,9 @@
 					{{item.name}}
 				</text>
 			</scroll-view>
-			<view class=" jt">
+			<view class=" jt" @click="display">
 				<view class="xz">
-					>
+					<image class="down1" src="../../static/images/down.png" :class="show==true?'xz180':'z180'" style="width: 30rpx;height: 30rpx;"></image>
 				</view>
 			</view>
 		</view>
@@ -55,15 +55,10 @@
 			</view>
 		</view>
 		
-		<!-- 手机品牌上面的图片 -->
-		<view class="xiaomi10">
-			<image :src="xiaomi.img_url" :style="{width: '100%',height: xiaomi.h+'rpx'}"></image>
-		</view>
-		
-		<!-- 小米手机和小米电视 -->
+		<!-- 小米手机到米家家电 -->
 		<view class="moban" v-for="(items,index1) in moban" :key="index1">
-			<view class="mobantu">
-				<image :src="items[0].body.items[0].img_url" :style="{width: '100%', height: items[0].body.items[0].h +'rpx'}" ></image>
+			<view class="mobantu" v-for="(imgitem,index) in items[0].body.items" :key="imgindex">
+				<image :src="imgitem.img_url" :style="{width: '100%', height: items[0].body.items[0].h +'rpx'}" ></image>
 			</view>
 			
 			<uni-grid :column="2" :showBorder='false'>
@@ -75,7 +70,7 @@
 						<view class="msbox">
 							<view class="jj">
 								{{item.product_name}}
-							</view>
+							</view> 
 							<view class="xx">
 								{{item.product_brief}}
 							</view>
@@ -93,23 +88,99 @@
 			</view>
 		</view>
 	
+		<!-- 小米智能 -->
+		<view class="zn" v-for="(items,index1) in zn" :key="index1">
+			<view class="mobantu" v-for="(imgitem,index) in items[0].body.items" :key="imgindex">
+				<image :src="imgitem.img_url" :style="{width: '100%', height: items[0].body.items[0].h +'rpx'}" ></image>
+			</view>
+			<view class="zj">
+				<view class="zyxj" v-for="(item,index) in items[1].body.items" :key="index" v-if="(index%2==0)" :style="{order:index} " >
+					<view class="z" style="height: 374rpx">
+						<image :src="item.img_url" mode=""></image>
+					</view>
+					<view class="r">
+						<view class="p">
+							<view class="jj">
+								{{item.product_name}}
+							</view>
+							
+							<view class="xx">
+								{{item.product_brief}}
+							</view>
+							
+							<view class="jg">
+								<text class="xj">￥{{item.product_price}}  </text>
+								<text class="ls" v-if="!(item.product_price == item.product_org_price)">￥{{item.product_org_price}}</text>
+							</view>
+						</view>
+						
+						
+					</view>
+				</view>
+				<view class="zyxj" v-for="(item,index) in items[1].body.items" :key="index" v-if="!(index%2==0)" :style="{order:index} ">
+					<view class="r">
+						<view class="p">
+							<view class="jj">
+								{{item.product_name}}
+							</view>
+							
+							<view class="xx">
+								{{item.product_brief}}
+							</view>
+							
+							<view class="jg">
+								<text class="xj">￥{{item.product_price}}  </text>
+								<text class="ls" v-if="!(item.product_price == item.product_org_price)">￥{{item.product_org_price}}</text>
+							</view>
+						</view>
+						
+					</view>
+					<view class="z"  style="height: 374rpx">
+						<image :src="item.img_url" mode=""></image>
+					</view>
+				</view>
+			</view>
+			
+			<view class="gengduo">
+				{{items[2].body.items[0].action_title}}
+			</view>
+		</view>
+	
+		<!-- 了解小米 -->
+		<view class="ljxm">
+			<uni-grid :column="2" :showBorder='false'>
+				<uni-grid-item v-for="(item,index) in ljxm[0].body.items" :key="index" :style="{height: item.h + 'rpx','margin-bottom':'10rpx'}">
+					<view class="img" :class="(index%2==0)?'m':''">
+						<image :src="item.img_url" style="width: 100%;"></image>
+					</view>
+					
+				</uni-grid-item>
+			</uni-grid>
+			
+			<view class="xm" v-for="(imgitem,index) in ljxm[1].body.items" :key="imgindex">
+				<image :src="imgitem.img_url" :style="{width: '100%', height: imgitem.h +'rpx'}" ></image>
+			</view>
+		</view>
+			
 	</view>
 </template>
 <script>
 	import {
 		getTopMenuData
-	} from "../../api/indexapi.js"
+	} from "../../api/indexapi.js" 
 	
 	export default {
 		data() {
 			return {
-				topdata: 'syml124',
+				topdata: '',
 				topmenuselect: 0,
 				lbtdata: [],
 				gogei: [],
 				multiCellData:[],
-				xiaomi:"",
 				moban:[],
+				zn:[],
+				ljxm:[],
+				show: false,
 			}
 		},
 		methods: {
@@ -128,9 +199,17 @@
 				this.lbtdata = data.sections[0].body.items;
 				this.gogei = temp;
 				this.multiCellData = data.sections[4].body.items;
-				this.xiaomi = data.sections[6].body.items[0]
 				this.moban = data.moban;
+				this.zn = data.zn;
+				this.ljxm = data.ljxm;
+				console.log(data.ljxm)
 				
+				// console.log(this.moban)
+				
+			},
+			display(){
+						// this.$refs.popup.open();
+						this.show = !this.show
 			}
 		},
 		created() {
@@ -144,12 +223,13 @@
 			position: sticky;
 			top: 0px;
 			display: flex;
-			background-color: #ccc;
+			background-color: #f2f2f2;
 			height: 80rpx;
 			z-index: 100;
+			align-items: center;
 			.logo {
 				width: 60rpx;
-				height: 60rpx;
+				height: 55rpx;
 				padding: 10rpx;
 
 				image {
@@ -172,7 +252,7 @@
 		.topmenu {
 			position: relative;
 			padding-top: 10rpx;
-			background-color: #ccc;
+			background-color: #f2f2f2;
 			font-size: 30rpx;
 			color: #333;
 			z-index: 100;
@@ -199,10 +279,20 @@
 				justify-content: center;
 				width: 56rpx;
 				height: 56rpx;
-				background-color: #ccc;
+				background-color: #f2f2f2;
 				position: absolute;
 				top: 0;
 				right: 0;
+				.xz{
+					.xz180{
+					  transition: all 1s;
+					  transform: rotate(180deg);
+					}
+					.z180{
+					  transition: all 1s;
+					  transform: rotate(0deg);
+					}
+				}
 			}
 		}
 
@@ -252,40 +342,87 @@
 					flex-direction:column;
 					align-items: center;
 					padding: 20rpx;
-					.jj{
-						font-size: 28rpx;
-					}
-					.xx{
-						margin-top:4rpx ;
-						font-size: 22rpx;
-						color: rgba(0,0,0,.54);
-					}
-					.jg{
-						margin-bottom:20rpx ;
-						.xj{
-							font-size: 28rpx;
-							color: #EA625B;
-							margin-right: 10rpx;
-						}
-						.ls{
-							font-size: 22rpx;
-							color: #757575;
-							text-decoration:line-through;
-						}
-					}
+					
+					
 				}
 				
 				
 			}
 			
-			.gengduo{
-				border-top: 1px solid #ccc;
-				display: flex;
-				justify-content: center;
-				color: #ccc;
-				padding: 36rpx;
-			}
+			
 		}
 		
+		.zn{
+			.zj{
+				display: flex;
+				flex-direction: column;
+				.zyxj{
+					display: flex;
+					.z{
+						flex: 1;
+						background-color: #ccc;
+						// border: 1rpx solid #f2f2f2;  
+					}
+					.r{
+						flex: 1;
+						.p{
+							padding: 60rpx;
+							.jg{
+								padding-top: 20rpx;	
+							}
+						}
+					}
+					image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+				
+			}
+		} 
+		
+		.jj{
+			font-size: 28rpx;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+			overflow: hidden;
+		}
+		.xx{
+			margin-top:4rpx ;
+			font-size: 22rpx;
+			color: rgba(0,0,0,.54);
+		}
+		.jg{
+			margin-bottom:20rpx ;
+			.xj{
+				font-size: 28rpx;
+				color: #EA625B;
+				margin-right: 10rpx;
+			}
+			.ls{
+				font-size: 22rpx;
+				color: #757575;
+				text-decoration:line-through;
+			}
+		}
+		.gengduo{
+			border-top: 1px solid #ccc;
+			display: flex;
+			justify-content: center;
+			color: #ccc;
+			padding: 36rpx;
+		}
+		
+		.ljxm{
+			.m{
+				margin-right: 10rpx;
+			}
+			.xm{
+				margin-bottom: 10rpx ;
+			}
+		}
+				
+				
 	}
 </style>
